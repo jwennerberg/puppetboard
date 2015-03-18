@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h2>Inventory Reports</h2>
+<div class="ui fluid icon input hide" style="margin-bottom:20px">
+  <input autofocus="autofocus" class="filter-table" placeholder="Type here to filter...">
+</div>
+<table class='ui compact basic table'>
+  <thead>
+    <tr>
+      <th>Report</th>
+      <th>Download</th>
+    </tr>
+  </thead>
+  <tbody class="searchable">
+    {% for report in reports %}
+    <tr>
+      <td>{{ report }}</td>
+      <td><a href="files/reports/{{ report }}"><i class="download icon"></i></a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock content %}

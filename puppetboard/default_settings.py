@@ -23,3 +23,4 @@ GRAPH_FACTS = ['architecture',
                'osfamily',
                'puppetversion',
                'processorcount']
+INVENTORY_DIR = None
