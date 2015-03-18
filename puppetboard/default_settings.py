@@ -23,3 +23,6 @@ GRAPH_FACTS = ['architecture',
                'osfamily',
                'puppetversion',
                'processorcount']
+PUPPETFILE_PATH = None
+GERRIT_HOST = None
+GERRIT_PROJECT_NAME = None
