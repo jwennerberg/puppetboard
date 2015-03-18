@@ -23,6 +23,10 @@
             <th>Report &nbsp;<i title='uploaded at' class=' upload icon'></i></th>
             <td rel="utctimestamp">{{node.report_timestamp}}</td>
           </tr>
+	  <tr>
+            <th>Config &nbsp;<i title='uploaded at' class=' upload icon'></i></th>
+            <td><a href="{{ url_for('yaml_node', node_name=node.name) }}">FQDN YAML File</a></td>
+          </tr>
         </tbody>
       </table>
     </div>
