@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h2>Modules</h2>
+<div class="ui fluid icon input hide" style="margin-bottom:20px">
+  <input autofocus="autofocus" class="filter-table" placeholder="Type here to filter...">
+</div>
+<table class='ui compact basic table'>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Ref</th>
+    </tr>
+  </thead>
+  <tbody class="searchable">
+    {% for module in modules %}
+    <tr>
+      <td>{{ module.name }}</td>
+      <td><a href="{{ module.url }}" target="_blank">{{ module.location }}</a></td>
+      <td>{{ module.ref }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock content %}

@@ -36,6 +36,9 @@ graph_facts = app.config['GRAPH_FACTS']
 app.config.from_envvar('PUPPETBOARD_SETTINGS', silent=True)
 graph_facts += app.config['GRAPH_FACTS']
 app.secret_key = app.config['SECRET_KEY']
+puppetfile_path = app.config['PUPPETFILE_PATH']
+gerrit_host = app.config['GERRIT_HOST']
+gerrit_project_name = app.config['GERRIT_PROJECT_NAME']
 
 app.jinja_env.filters['jsonprint'] = jsonprint
 
@@ -366,3 +369,39 @@ def metric(metric):
         'metric.html',
         name=name,
         metric=sorted(metric.items()))
+
+
+@app.route('/modules')
+def modules():
+    modules = []
+    data = {}
+    f = open(puppetfile_path, 'r')
+    mod = False
+    data = []
+    info = {}
+    for line in f.readlines():
+        match = re.match( r'^mod [\'\"]?([a-z\_]*)[\'\"]?\,$', line, re.I|re.M)
+        if match:
+            info = {}
+            mod = True
+            info['name'] = match.group(1)
+        if mod:
+            m_location = re.match( r'^\s*:git \=\> [\'\"]?([a-z0-9@\:\/\-\_\.]+)[\'\"]?,?$', line, re.I|re.M)
+            if m_location:
+                info['location'] = m_location.group(1)
+                m_url = re.match( r'^ssh:\/\/[a-z0-9]*@?[a-z0-9\.\-\_]+:?[0-9]*\/(.*)$', info['location'], re.I|re.M)
+                if m_url:
+                    info['url'] = 'https://{0}/gitweb?p={1}.git;a=tree'.format(gerrit_host, m_url.group(1))
+                else:
+                    info['url'] = re.sub('git:', 'https:', info['location'])
+            m_ref = re.match( r'^\s*:ref \=\> [\'\"]?([a-z0-9\-\.]+)[\'\"]?,?$', line, re.I|re.M)
+            if m_ref:
+                info['ref'] = m_ref.group(1)
+        if line in ['\n', '\r\n']:
+            if len(info) > 0:
+                data.append(info)
+                info = {}
+    f.close()
+    return render_template(
+        'modules.html',
+        modules=data)
