@@ -405,3 +405,21 @@ def modules():
     return render_template(
         'modules.html',
         modules=data)
+
+
+@app.route('/yaml/<node_name>')
+def yaml_node(node_name):
+    if node_name is None:
+        abort(404)
+    url = 'https://{0}/gitweb?p={1}.git;a=blob_plain;f=fqdn/{2}.yaml;hb=refs/heads/master'.format(gerrit_host, gerrit_project_name, node_name)
+    return render_template(
+        'yaml_node.html',
+        url=url)
+
+
+@app.route('/repo')
+def repo():
+    url = 'https://{0}/gitweb?p={1}.git;a=tree'.format(gerrit_host, gerrit_project_name)
+    return render_template(
+        'repo.html',
+        url=url)
