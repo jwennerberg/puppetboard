@@ -1,8 +1,9 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import
 
-import re
+import glob
 import os
+import re
 import logging
 import collections
 try:
@@ -423,3 +424,12 @@ def repo():
     return render_template(
         'repo.html',
         url=url)
+
+
+@app.route('/inventory')
+def inventory():
+    inventory_dir = app.config['INVENTORY_DIR']
+    reports = [ os.path.basename(x) for x in glob.glob('{0}/*.csv'.format(inventory_dir)) ]
+    return render_template(
+        'inventory.html',
+        reports=reports)
