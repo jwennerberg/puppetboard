@@ -381,7 +381,7 @@ def modules():
     data = []
     info = {}
     for line in f.readlines():
-        match = re.match( r'^mod [\'\"]?([a-z\_]*)[\'\"]?\,$', line, re.I|re.M)
+        match = re.match( r'^mod [\'\"]?([a-z][a-z0-9\_]*)[\'\"]?\,$', line, re.I|re.M)
         if match:
             info = {}
             mod = True
